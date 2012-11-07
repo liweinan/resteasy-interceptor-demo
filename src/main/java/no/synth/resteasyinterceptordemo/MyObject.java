@@ -10,7 +10,9 @@ public class MyObject {
     public String name;
     public String role;
 
-    MyObject() {}
+    MyObject() {
+        // needed by jaxb
+    }
 
     MyObject(String name, String role) {
         this.name = name;

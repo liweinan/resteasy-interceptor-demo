@@ -6,37 +6,66 @@
 </head>
 <body>
 
-<h2>1a. Post to a resource, return XML:</h2>
-... but the interceptors doesn't trigger.
+<h2>1. Post to resource, with username</h2>
+<ul>
+<li>FAIL: The MessageBodyReaderInterceptor doesn't trigger</li>
+<li>OK: The PreProcessorInterceptor triggers</li>
+</ul>
 <form action="api/role" method="post">
 
 <input type=text name="en" value="ein"/><br>
 <input type=text name="to" value="schwei"/><br>
-<input type=text name="tre" value="drei"/><br>
+<input type=text name="username" value="john"/><br>
 
 <input type="submit" value="Post it!" />
 </form>
-<h2>1b. Post to a resource, return XML:</h2>
-... which actually triggers the MessageBodyReaderInterceptor, the only difference is in the method signature:
-<b>postTest(String formParams)</b> seems to work, while <b>post(MultivaluedMap&lt;String, String&gt; formParams)</b> doesn't.
-<br>The PreProcessInterceptor is not triggered, though...<br>
+
+<h2>2. Post to resource, with username</h2>
+<ul>
+<li>OK: Triggers the MessageBodyReaderInterceptor</li>
+<li>OK: The PreProcessorInterceptor triggers</li>
+</ul>
+The only difference from 1. is in the method signature:
+<b>postTest(String formParams)</b> works, while <b>post(MultivaluedMap&lt;String, String&gt; formParams)</b> doesn't.
+
 <form action="api/roletest" method="post">
 
     <input type=text name="en" value="ein"/><br>
     <input type=text name="to" value="schwei"/><br>
     <input type=text name="tre" value="drei"/><br>
+    <input type=text name="username" value="john"/><br>
 
     <input type="submit" value="Post it!" />
 </form>
 
-<h2>2. Get a resource that throws an exception, which is nicely formatted</h2>
-The interceptors still doesn't trigger:
-<a href="api/name/testing">throw an exception</a>
+<h2>3. Get a resource without a username</h2>
+<ul>
+<li>FAIL: The MessageBodyReaderInterceptor doesn't trigger</li>
+<li>OK: The PreProcessInterceptor triggers and throws a SecurityException</li>
+<li>OK: The exception is nicely formatted by MyExceptionMapper</li>
+</ul>
 
-<h2>3. Post to a resource that throws an exception</h2>
-Somehow there isn't any MessageBodyWriter for application/x-www-form-urlencoded, so there's no nice formatting.
+<a href="api/name/testing">Throw an exception</a>
+
+<h2>4. Get a resource (with username) that throws an inner exception</h2>
+<ul>
+<li>FAIL: The MessageBodyReaderInterceptor doesn't trigger</li>
+<li>OK: The PreProcessInterceptor triggers</li>
+<li>OK: The result is nicely formatted by MyExceptionMapper</li>
+</ul>
+<a href="api/name/testing?username=john">Throw an exception</a>
+
+<h2>5. Post to a resource that throws an exception</h2>
+<ul>
+<li>FAIL: The MessageBodyReaderInterceptor doesn't trigger</li>
+<li>OK: The PreProcessInterceptor triggers</li>
+<li>FAIL: Somehow there isn't any MessageBodyWriter for application/x-www-form-urlencoded</li>
+<li>FAIL: No nice formatting by MyExceptionMapper</li>
+</ul>
+
 <form action="api/another" method="post">
 <input type="hidden" name="yo" value="hey" />
+<input type=text name="username" value="john"/><br>
 <input type="submit" value="Fail" />
 </form>
 
