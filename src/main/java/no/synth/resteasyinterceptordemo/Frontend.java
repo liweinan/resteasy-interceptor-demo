@@ -39,6 +39,18 @@ public class Frontend {
     }
 
     @POST
+    @Path("/roletest")
+    @Produces({"application/json", "application/xml"})
+    public List<MyObject> postTest(String formParams) {
+        log.severe("Frontend.post()");
+        System.err.println("Frontend.post()");
+
+        List<MyObject> list = new ArrayList<MyObject>();
+        list.add(new MyObject("empty", formParams));
+        return list;
+    }
+
+    @POST
     @Path("/another")
     @Produces({"application/json", "application/xml"})
     public List<MyObject> postFail(MultivaluedMap<String, String> formParams) {

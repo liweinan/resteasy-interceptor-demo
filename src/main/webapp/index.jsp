@@ -6,8 +6,8 @@
 </head>
 <body>
 
-<h2>1. Post to a resource, return XML:</h2>
-... but the interceptor doesn't triggered.
+<h2>1a. Post to a resource, return XML:</h2>
+... but the interceptors doesn't trigger.
 <form action="api/role" method="post">
 
 <input type=text name="en" value="ein"/><br>
@@ -16,8 +16,21 @@
 
 <input type="submit" value="Post it!" />
 </form>
+<h2>1b. Post to a resource, return XML:</h2>
+... which actually triggers the MessageBodyReaderInterceptor, the only difference is in the method signature:
+<b>postTest(String formParams)</b> seems to work, while <b>post(MultivaluedMap&lt;String, String&gt; formParams)</b> doesn't.
+<br>The PreProcessInterceptor is not triggered, though...<br>
+<form action="api/roletest" method="post">
+
+    <input type=text name="en" value="ein"/><br>
+    <input type=text name="to" value="schwei"/><br>
+    <input type=text name="tre" value="drei"/><br>
+
+    <input type="submit" value="Post it!" />
+</form>
+
 <h2>2. Get a resource that throws an exception, which is nicely formatted</h2>
-The interceptor still doesn't trigger: 
+The interceptors still doesn't trigger:
 <a href="api/name/testing">throw an exception</a>
 
 <h2>3. Post to a resource that throws an exception</h2>
