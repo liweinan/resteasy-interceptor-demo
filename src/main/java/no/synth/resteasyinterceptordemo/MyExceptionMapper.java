@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.logging.Logger;
 
 @Provider
-public class MyExceptionMapper implements ExceptionMapper<java.lang.Exception> {
+public class MyExceptionMapper implements ExceptionMapper<java.lang.RuntimeException> {
 
     private static final Logger log = Logger.getLogger(MyExceptionMapper.class.getName());
 
@@ -34,7 +34,7 @@ public class MyExceptionMapper implements ExceptionMapper<java.lang.Exception> {
         }
     }
 
-    public Response toResponse(Exception exception) {
+    public Response toResponse(RuntimeException exception) {
         int status = 500;
         String message = exception.getMessage();
         if (exception instanceof Failure) {
